@@ -361,6 +361,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &790110304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 790110306}
+  - component: {fileID: 790110305}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &790110305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790110304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb557cfc66a9402489b6d5e459349ef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+--- !u!4 &790110306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 790110304}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1812237044
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,8 +449,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 020c05bcb132bca488ee961bf0d80937, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
-  cellPrefab: {fileID: 7823756463305903633, guid: 433e19f9cd176714a9fe14d61c14b1bc, type: 3}
-  wallPrefab: {fileID: 3164546827337650655, guid: 9da5d72bedbbb824c8862a4903288bd4, type: 3}
+  cellPrefab: {fileID: 3625081217709544821, guid: 433e19f9cd176714a9fe14d61c14b1bc, type: 3}
+  wallPrefab: {fileID: 184981826736355120, guid: 9da5d72bedbbb824c8862a4903288bd4, type: 3}
   width: 4
   height: 6
   cellSize: 1
@@ -419,7 +463,7 @@ MonoBehaviour:
   - {x: 1, y: 5}
   - {x: 2, y: 1}
   ballPrefab: {fileID: 1513825741801853754, guid: dc43c07245159cf43924e461c720cd22, type: 3}
-  ballSpawnCoordinate: {x: 0, y: 5}
+  ballSpawnCoordinate: {x: 2, y: 5}
   ballSize: 0.8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -428,3 +472,4 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1812237045}
+  - {fileID: 790110306}

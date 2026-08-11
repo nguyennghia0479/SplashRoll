@@ -1,15 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CellType
-{
-    Empty, Wall
-}
-
 public class GridSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject cellPrefab;
-    [SerializeField] private GameObject wallPrefab;
+    [SerializeField] private Cell cellPrefab;
+    [SerializeField] private Cell wallPrefab;
 
     [Header("Grid Info")]
     [Range(3, 8)]
@@ -26,13 +21,15 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private Vector2Int ballSpawnCoordinate;
     [SerializeField] private float ballSize = .8f;
 
-    private CellType[,] gridData;
+    private List<Cell> pathCells = new();
+    private Cell[,] gridData;
     private float gridStartX;
     private float gridStartY;
+    private int emptyCellAmount;
 
     private void Awake()
     {
-        gridData = new CellType[width, height];
+        gridData = new Cell[width, height];
     }
 
     private void Start()
@@ -56,20 +53,24 @@ public class GridSystem : MonoBehaviour
 
                 if (wallCoordinates.Contains(currentCoord))
                 {
-                    gridData[i, j] = CellType.Wall;
-                    Instantiate(wallPrefab, spawnPos, Quaternion.identity, transform);
+                    Cell newWall = Instantiate(wallPrefab, spawnPos, Quaternion.identity, transform);
+                    gridData[i, j] = newWall;
                 }
                 else
                 {
-                    gridData[i, j] = CellType.Empty;
-                    Instantiate(cellPrefab, spawnPos, Quaternion.identity, transform);
+                    Cell newCell = Instantiate(cellPrefab, spawnPos, Quaternion.identity, transform);
+                    gridData[i, j] = newCell;
+                    emptyCellAmount++;
                 }
             }
         }
+
+        GameEvents.RaiseEmptyCellCounted(emptyCellAmount);
     }
 
     private void GenerateBall()
     {
+        gridData[ballSpawnCoordinate.x, ballSpawnCoordinate.y].PaintCell();
         Vector2 spawnPos = GridCoordinateToWorldPostion(ballSpawnCoordinate.x, ballSpawnCoordinate.y);
         BallMovement newBall = Instantiate(ballPrefab, spawnPos, Quaternion.identity);
         newBall.transform.localScale = new Vector3(cellSize * ballSize, cellSize * ballSize, 1);
@@ -130,6 +131,25 @@ public class GridSystem : MonoBehaviour
         if (!IsValidCoordinate(coordinate.x, coordinate.y))
             return true;
 
-        return gridData[coordinate.x, coordinate.y] == CellType.Wall;
+        Cell cell = gridData[coordinate.x, coordinate.y];
+        if (cell.CellType == CellType.Empty)
+            pathCells.Add(cell);
+
+        return cell.CellType == CellType.Wall;
     }
+
+    public void PaintCell(Vector3 ballPosition)
+    {
+        if (pathCells.Count <= 0)
+            return;
+
+        Cell cell = pathCells[0];
+        if ((cell.transform.position - ballPosition).sqrMagnitude < .1f)
+        {
+            cell.PaintCell();
+            pathCells.RemoveAt(0);
+        }
+    }
+
+    public void ClearPathCells() => pathCells.Clear();
 }
