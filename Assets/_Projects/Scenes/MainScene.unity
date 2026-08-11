@@ -390,6 +390,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb557cfc66a9402489b6d5e459349ef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  levels:
+  - {fileID: 11400000, guid: 930fea3bc66dada4cb430cf708fe17b3, type: 2}
 --- !u!4 &790110306
 Transform:
   m_ObjectHideFlags: 0
@@ -451,19 +453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
   cellPrefab: {fileID: 3625081217709544821, guid: 433e19f9cd176714a9fe14d61c14b1bc, type: 3}
   wallPrefab: {fileID: 184981826736355120, guid: 9da5d72bedbbb824c8862a4903288bd4, type: 3}
-  width: 4
-  height: 6
-  cellSize: 1
-  uiPadding: 3
-  wallCoordinates:
-  - {x: 1, y: 1}
-  - {x: 1, y: 2}
-  - {x: 1, y: 3}
-  - {x: 1, y: 4}
-  - {x: 1, y: 5}
-  - {x: 2, y: 1}
   ballPrefab: {fileID: 1513825741801853754, guid: dc43c07245159cf43924e461c720cd22, type: 3}
-  ballSpawnCoordinate: {x: 2, y: 5}
   ballSize: 0.8
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

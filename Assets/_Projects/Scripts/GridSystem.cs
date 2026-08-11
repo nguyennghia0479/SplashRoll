@@ -6,37 +6,54 @@ public class GridSystem : MonoBehaviour
     [SerializeField] private Cell cellPrefab;
     [SerializeField] private Cell wallPrefab;
 
-    [Header("Grid Info")]
-    [Range(3, 8)]
-    [SerializeField] private int width = 4;
-    [Range(3, 10)]
-    [SerializeField] private int height = 6;
-    [Range(.5f, 1.5f)]
-    [SerializeField] private float cellSize = 1;
-    [SerializeField] private float uiPadding = 1;
-    [SerializeField] private List<Vector2Int> wallCoordinates = new();
-
     [Header("Ball Info")]
     [SerializeField] private BallMovement ballPrefab;
-    [SerializeField] private Vector2Int ballSpawnCoordinate;
     [SerializeField] private float ballSize = .8f;
 
-    private List<Cell> pathCells = new();
+    private int width;
+    private int height;
+    private float cellSize;
+    private float uiPadding;
+    private List<Vector2Int> wallCoordinates;
+    private Vector2Int ballSpawnCoordinate;
+    private List<Cell> pathCells;
     private Cell[,] gridData;
     private float gridStartX;
     private float gridStartY;
     private int emptyCellAmount;
+    private GameObject ball;
 
-    private void Awake()
+    private void OnEnable()
     {
-        gridData = new Cell[width, height];
+        GameEvents.OnLevelLoaded += HandleLoadLevel;
     }
 
-    private void Start()
+    private void OnDisable()
     {
+        GameEvents.OnLevelLoaded -= HandleLoadLevel;
+    }
+
+    private void HandleLoadLevel(LevelSO level)
+    {
+        width = level.GridWidth;
+        height = level.GridHeight;
+        cellSize = level.CellSize;
+        uiPadding = level.UIPadding;
+        wallCoordinates = level.WallCoordinates;
+        ballSpawnCoordinate = level.BallSpawnCoordinate;
+
+        SetupGrid();
         SetOrthographicSizeByGridSize();
         GenerateGrid();
         GenerateBall();
+    }
+
+    private void SetupGrid()
+    {
+        pathCells = new List<Cell>();
+        gridData = new Cell[width, height];
+        emptyCellAmount = 0;
+        Destroy(ball);
     }
 
     private void GenerateGrid()
@@ -70,11 +87,18 @@ public class GridSystem : MonoBehaviour
 
     private void GenerateBall()
     {
+        if (!IsValidCoordinate(ballSpawnCoordinate.x, ballSpawnCoordinate.y))
+        {
+            Debug.Log("Ball is outside grid");
+            return;
+        }
+
         gridData[ballSpawnCoordinate.x, ballSpawnCoordinate.y].PaintCell();
         Vector2 spawnPos = GridCoordinateToWorldPostion(ballSpawnCoordinate.x, ballSpawnCoordinate.y);
         BallMovement newBall = Instantiate(ballPrefab, spawnPos, Quaternion.identity);
         newBall.transform.localScale = new Vector3(cellSize * ballSize, cellSize * ballSize, 1);
         newBall.SetupBallMovement(this);
+        ball = newBall.gameObject;
     }
 
     private void SetOrthographicSizeByGridSize()

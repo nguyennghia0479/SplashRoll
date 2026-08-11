@@ -1,7 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private List<LevelSO> levels;
+
+    private LevelSO currentLevel;
+    private int levelIndex;
     private int emptyCellAmount;
 
     private void OnEnable()
@@ -16,6 +21,12 @@ public class GameManager : MonoBehaviour
         GameEvents.OnCellPainted -= HandleCellPainted;
     }
 
+    private void Start()
+    {
+        levelIndex = 0;
+        LoadLevel();
+    }
+
     private void HandleEmptyCellCounted(int emptyCellAmount)
     {
         this.emptyCellAmount = emptyCellAmount;
@@ -28,6 +39,24 @@ public class GameManager : MonoBehaviour
 
         emptyCellAmount--;
         if (emptyCellAmount <= 0)
-            Debug.Log("Complete level");
+            Invoke(nameof(LoadNextLevel), 1f);  // Will be replaced by UI
+    }
+
+    private void LoadNextLevel()
+    {
+        levelIndex++;
+        if (levelIndex >= levels.Count)
+        {
+            Debug.Log("You have completed all level. Congratulations!");
+            return;
+        }
+
+        LoadLevel();
+    }
+
+    private void LoadLevel()
+    {
+        currentLevel = levels[levelIndex];
+        GameEvents.RaiseLevelLoaded(currentLevel);
     }
 }
