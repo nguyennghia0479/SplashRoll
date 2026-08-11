@@ -30,8 +30,10 @@ public class BallMovement : MonoBehaviour
         if (isMoving)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            gridManager.PaintCell(transform.position);
             if ((targetPos - transform.position).sqrMagnitude <= sqrtMinDistance)
             {
+                gridManager.ClearPathCells();
                 transform.position = targetPos;
                 isMoving = false;
             }
