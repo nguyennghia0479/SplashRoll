@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum CellType
 {
-    Empty, Wall
+    Empty, Wall, Start
 }
 
 public class Cell : MonoBehaviour

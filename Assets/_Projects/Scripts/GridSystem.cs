@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridSystem : MonoBehaviour
@@ -39,8 +40,8 @@ public class GridSystem : MonoBehaviour
         height = level.GridHeight;
         cellSize = level.CellSize;
         uiPadding = level.UIPadding;
-        wallCoordinates = level.WallCoordinates;
-        ballSpawnCoordinate = level.BallSpawnCoordinate;
+        wallCoordinates = level.WallCoordinates.ToList();
+        ballSpawnCoordinate = level.BallStartCoord;
 
         SetupGrid();
         SetOrthographicSizeByGridSize();
@@ -54,6 +55,13 @@ public class GridSystem : MonoBehaviour
         gridData = new Cell[width, height];
         emptyCellAmount = 0;
         Destroy(ball);
+        ClearGrid();
+    }
+
+    private void ClearGrid()
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
+            Destroy(transform.GetChild(i).gameObject);
     }
 
     private void GenerateGrid()
@@ -89,7 +97,7 @@ public class GridSystem : MonoBehaviour
     {
         if (!IsValidCoordinate(ballSpawnCoordinate.x, ballSpawnCoordinate.y))
         {
-            Debug.Log("Ball is outside grid");
+            Debug.LogError("Ball is outside grid!");
             return;
         }
 

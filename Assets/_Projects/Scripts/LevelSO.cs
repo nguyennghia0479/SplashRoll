@@ -4,21 +4,39 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Level -", menuName = "Scriptable Objects/LevelSO")]
 public class LevelSO : ScriptableObject
 {
-    [Header("Grid Info")]
-    [Range(3, 8)]
-    [SerializeField] private int gridWitdth;
-    [Range(3, 10)]
-    [SerializeField] private int gridHeight;
-    [Range(.5f, 1.5f)]
-    [SerializeField] private float cellSize = 1;
-    [SerializeField] private float uiPadding = 1;
-    [SerializeField] private List<Vector2Int> wallCoordinates;
-    [SerializeField] private Vector2Int ballSpawnCoordinate;
+    [SerializeField] private LevelData levelData;
 
-    public int GridWidth => gridWitdth;
-    public int GridHeight => gridHeight;
-    public float CellSize => cellSize;
-    public float UIPadding => uiPadding;
-    public List<Vector2Int> WallCoordinates => wallCoordinates;
-    public Vector2Int BallSpawnCoordinate => ballSpawnCoordinate;
+    public void SaveLevelSO(LevelData levelData)
+    {
+        this.levelData = levelData;
+    }
+
+    public LevelData LevelData => levelData;
+    public int GridWidth => levelData.gridWidth;
+    public int GridHeight => levelData.gridHeight;
+    public float CellSize => levelData.cellSize;
+    public float UIPadding => levelData.uiPadding;
+    public IReadOnlyList<Vector2Int> WallCoordinates => levelData.wallCoordinates;
+    public Vector2Int BallStartCoord => levelData.ballStartCoord;
+}
+
+[System.Serializable]
+public struct LevelData
+{
+    public int gridWidth;
+    public int gridHeight;
+    public float cellSize;
+    public float uiPadding;
+    public List<Vector2Int> wallCoordinates;
+    public Vector2Int ballStartCoord;
+
+    public LevelData(int gridWidth, int gridHeight, float cellSize, float uiPadding, List<Vector2Int> wallCoordinates, Vector2Int ballStartCoord)
+    {
+        this.gridWidth = gridWidth;
+        this.gridHeight = gridHeight;
+        this.cellSize = cellSize;
+        this.uiPadding = uiPadding;
+        this.wallCoordinates = wallCoordinates != null ? new List<Vector2Int>(wallCoordinates) : new();
+        this.ballStartCoord = ballStartCoord;
+    }
 }
