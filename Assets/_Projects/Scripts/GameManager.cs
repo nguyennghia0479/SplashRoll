@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -25,6 +26,18 @@ public class GameManager : MonoBehaviour
     {
         levelIndex = 0;
         LoadLevel();
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
+            LoadLevel();
+
+        if (Keyboard.current != null && Keyboard.current.nKey.wasPressedThisFrame)
+        {
+            levelIndex++;
+            LoadLevel();
+        }
     }
 
     private void HandleEmptyCellCounted(int emptyCellAmount)

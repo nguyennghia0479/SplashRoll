@@ -391,7 +391,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   levels:
-  - {fileID: 11400000, guid: 930fea3bc66dada4cb430cf708fe17b3, type: 2}
+  - {fileID: 11400000, guid: d9447ebfeced94b4cad69d3f949af75e, type: 2}
+  - {fileID: 11400000, guid: 044acd476ac74f842a538a75b491c98e, type: 2}
+  - {fileID: 11400000, guid: 74519c14212ec7b4394464466a489596, type: 2}
+  - {fileID: 11400000, guid: 62eb8ae38f57e9748a6513287f30e6b6, type: 2}
+  - {fileID: 11400000, guid: e6d41bf5f15e62944bfb83b1e872fff1, type: 2}
+  - {fileID: 11400000, guid: e3c1f5631df07b241b9616d424ce557a, type: 2}
 --- !u!4 &790110306
 Transform:
   m_ObjectHideFlags: 0

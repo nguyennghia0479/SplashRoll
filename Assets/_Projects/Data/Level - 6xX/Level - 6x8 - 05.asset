@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e21f1fa1f5692414f89ffad0ff04a08f, type: 3}
+  m_Name: Level - 6x8 - 05
+  m_EditorClassIdentifier: Assembly-CSharp::LevelSO
+  levelData:
+    gridWidth: 6
+    gridHeight: 8
+    cellSize: 1
+    uiPadding: 3
+    wallCoordinates:
+    - {x: 0, y: 0}
+    - {x: 0, y: 5}
+    - {x: 1, y: 2}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    - {x: 3, y: 0}
+    - {x: 3, y: 2}
+    - {x: 3, y: 4}
+    - {x: 4, y: 6}
+    - {x: 5, y: 2}
+    ballStartCoord: {x: 0, y: 7}
