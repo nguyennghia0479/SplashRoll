@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        levelIndex = 0;
-        LoadLevel();
+        //levelIndex = 0;
+        //LoadLevel();
     }
 
     private void Update()

@@ -5,6 +5,8 @@ using UnityEngine;
 public class LevelSO : ScriptableObject
 {
     [SerializeField] private LevelData levelData;
+    [SerializeField] private bool isUnlocked;
+    [SerializeField] private bool isCompleted;
 
     public void SaveLevelSO(LevelData levelData)
     {
@@ -12,6 +14,8 @@ public class LevelSO : ScriptableObject
     }
 
     public LevelData LevelData => levelData;
+    public bool IsUnlocked => isUnlocked;
+    public bool IsCompleted => isCompleted;
     public int GridWidth => levelData.gridWidth;
     public int GridHeight => levelData.gridHeight;
     public float CellSize => levelData.cellSize;
