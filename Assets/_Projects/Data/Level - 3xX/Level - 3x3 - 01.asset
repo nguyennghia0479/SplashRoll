@@ -12,13 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21f1fa1f5692414f89ffad0ff04a08f, type: 3}
   m_Name: Level - 3x3 - 01
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
-  gridWidth: 3
-  gridHeight: 3
-  cellSize: 1
-  uiPadding: 3
-  wallCoordinates:
-  - {x: 1, y: 1}
-  ballStartCoord: {x: 0, y: 0}
   levelData:
     gridWidth: 3
     gridHeight: 3
@@ -27,3 +20,5 @@ MonoBehaviour:
     wallCoordinates:
     - {x: 1, y: 1}
     ballStartCoord: {x: 0, y: 0}
+  isUnlocked: 1
+  isCompleted: 1
