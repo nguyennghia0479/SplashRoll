@@ -117,8 +117,10 @@ public class GridSystem : MonoBehaviour
 
         float cameraSizeByWidth = ((maxWidth / 2) / mainCam.aspect) + 1;
         float cameraSizeByHeight = (maxHeight / 2) + uiPadding;
-
         mainCam.orthographicSize = Mathf.Max(cameraSizeByWidth, cameraSizeByHeight);
+
+        float verticalOffset = .5f;
+        mainCam.transform.position = new Vector3(mainCam.transform.position.x, verticalOffset, mainCam.transform.position.z);
     }
 
     public Vector3 ClampToGridBoundaries(Vector3 targetPosition)
