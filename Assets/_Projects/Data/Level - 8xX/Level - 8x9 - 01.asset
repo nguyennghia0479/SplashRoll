@@ -16,7 +16,7 @@ MonoBehaviour:
     gridWidth: 8
     gridHeight: 9
     cellSize: 1
-    uiPadding: 3
+    uiPadding: 4
     wallCoordinates:
     - {x: 0, y: 8}
     - {x: 2, y: 2}
