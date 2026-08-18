@@ -4,18 +4,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Level -", menuName = "Scriptable Objects/LevelSO")]
 public class LevelSO : ScriptableObject
 {
+    [SerializeField] private string levelId;
     [SerializeField] private LevelData levelData;
-    [SerializeField] private bool isUnlocked;
-    [SerializeField] private bool isCompleted;
 
     public void SaveLevelSO(LevelData levelData)
     {
         this.levelData = levelData;
     }
 
+    public string LevelId => levelId;
     public LevelData LevelData => levelData;
-    public bool IsUnlocked => isUnlocked;
-    public bool IsCompleted => isCompleted;
     public int GridWidth => levelData.gridWidth;
     public int GridHeight => levelData.gridHeight;
     public float CellSize => levelData.cellSize;

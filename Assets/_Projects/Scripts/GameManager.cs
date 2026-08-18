@@ -1,48 +1,44 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private List<LevelSO> levels;
-
-    private LevelSO currentLevel;
-    private int levelIndex;
+    private LevelManager levelManager;
     private int emptyCellAmount;
+    private int moves;
 
     private void OnEnable()
     {
+        GameEvents.OnBallMoved += HandleBallMoved;
+
+        UIEvents.OnMainMenuButtonClicked += HandleMainMenuButtonClicked;
         GameEvents.OnEmptyCellCounted += HandleEmptyCellCounted;
         GameEvents.OnCellPainted += HandleCellPainted;
     }
 
     private void OnDisable()
     {
+        GameEvents.OnBallMoved -= HandleBallMoved;
+
+        UIEvents.OnMainMenuButtonClicked -= HandleMainMenuButtonClicked;
         GameEvents.OnEmptyCellCounted -= HandleEmptyCellCounted;
         GameEvents.OnCellPainted -= HandleCellPainted;
     }
 
     private void Start()
     {
-        //levelIndex = 0;
-        //LoadLevel();
+        levelManager = LevelManager.Instance;
     }
 
-    private void Update()
+    private void HandleMainMenuButtonClicked()
     {
-        if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
-            LoadLevel();
-
-        if (Keyboard.current != null && Keyboard.current.nKey.wasPressedThisFrame)
-        {
-            levelIndex++;
-            LoadLevel();
-        }
+        emptyCellAmount = 0;
+        moves = 0;
     }
 
     private void HandleEmptyCellCounted(int emptyCellAmount)
     {
         this.emptyCellAmount = emptyCellAmount;
+        moves = 0;
     }
 
     private void HandleCellPainted()
@@ -52,24 +48,31 @@ public class GameManager : MonoBehaviour
 
         emptyCellAmount--;
         if (emptyCellAmount <= 0)
-            Invoke(nameof(LoadNextLevel), 1f);  // Will be replaced by UI
+            Invoke(nameof(LevelCompleted), .5f);
     }
 
-    private void LoadNextLevel()
+    private void LevelCompleted()
     {
-        levelIndex++;
-        if (levelIndex >= levels.Count)
-        {
-            Debug.Log("You have completed all level. Congratulations!");
-            return;
-        }
+        bool canLoadNextLevel = levelManager.CanLoadNextLevel();
+        string levelName = levelManager.GetLevelName();
 
-        LoadLevel();
+        ResultData resultData = new(levelName, moves, moves);
+        GameEvents.RaiseLevelCompleted(canLoadNextLevel, resultData);
     }
 
-    private void LoadLevel()
+    private void HandleBallMoved() => moves++;
+}
+
+public struct ResultData
+{
+    public string levelName;
+    public int moves;
+    public int best;
+
+    public ResultData(string levelName, int moves, int best)
     {
-        currentLevel = levels[levelIndex];
-        GameEvents.RaiseLevelLoaded(currentLevel);
+        this.levelName = levelName;
+        this.moves = moves;
+        this.best = best;
     }
 }

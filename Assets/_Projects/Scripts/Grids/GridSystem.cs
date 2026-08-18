@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GridSystem : MonoBehaviour
@@ -26,33 +25,51 @@ public class GridSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnLevelLoaded += HandleLoadLevel;
+        GameEvents.OnLevelLoaded += HandleLevelLoaded;
+        UIEvents.OnMainMenuButtonClicked += HandleMainMenuButtonClicked;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnLevelLoaded -= HandleLoadLevel;
+        GameEvents.OnLevelLoaded -= HandleLevelLoaded;
+        UIEvents.OnMainMenuButtonClicked -= HandleMainMenuButtonClicked;
     }
 
-    private void HandleLoadLevel(LevelSO level)
+    private void HandleLevelLoaded(LevelDTO levelDTO)
     {
-        width = level.GridWidth;
-        height = level.GridHeight;
-        cellSize = level.CellSize;
-        uiPadding = level.UIPadding;
-        wallCoordinates = level.WallCoordinates.ToList();
-        ballSpawnCoordinate = level.BallStartCoord;
+        LevelData level = levelDTO.LevelData;
+        width = level.gridWidth;
+        height = level.gridHeight;
+        cellSize = level.cellSize;
+        uiPadding = level.uiPadding;
+        wallCoordinates = level.wallCoordinates;
+        ballSpawnCoordinate = level.ballStartCoord;
 
-        SetupGrid();
+        ResetGrid();
         SetOrthographicSizeByGridSize();
         GenerateGrid();
         GenerateBall();
     }
 
-    private void SetupGrid()
+    private void HandleMainMenuButtonClicked()
     {
+        width = 0;
+        height = 0;
+        cellSize = 0;
+        uiPadding = 0;
+        wallCoordinates = null;
+        ballSpawnCoordinate = Vector2Int.zero;
+        ResetGrid();
+    }
+
+    private void ResetGrid()
+    {
+        if (width > 0 && height > 0)
+            gridData = new Cell[width, height];
+        else
+            gridData = null;
+
         pathCells = new List<Cell>();
-        gridData = new Cell[width, height];
         emptyCellAmount = 0;
         Destroy(ball);
         ClearGrid();

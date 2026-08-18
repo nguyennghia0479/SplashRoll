@@ -51,7 +51,10 @@ public class BallMovement : MonoBehaviour
         {
             targetPos = GetFinalDestination(moveDir);
             if (transform.position != targetPos)
+            {
                 isMoving = true;
+                GameEvents.RaiseBallMoved();
+            }
         }
     }
 

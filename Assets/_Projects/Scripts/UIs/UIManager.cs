@@ -5,6 +5,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject[] uiElements;
     [Space]
     [SerializeField] private MainMenuUI mainMenuUI;
+    [SerializeField] private MainGameUI mainGameUI;
+    [SerializeField] private CompletedUI completedUI;
     [SerializeField] private LevelSelectUI levelSelectUI;
     [SerializeField] private CreditsUI creditsUI;
     [SerializeField] private SettingsUI settingsUI;
@@ -14,6 +16,10 @@ public class UIManager : MonoBehaviour
         UIEvents.OnPlayButtonClicked += HandlePlayButtonClicked;
         UIEvents.OnCreditsButtonClicked += HandleCreditButtonClicked;
         UIEvents.OnSettingsButtonClicked += HandleSettingsButtonClicked;
+        UIEvents.OnLevelButtonClicked += HandleLevelButtonClicked;
+        UIEvents.OnMainMenuButtonClicked += HandleMainMenuButtonClicked;
+        GameEvents.OnLevelLoaded += HandleLevelLoaded;
+        GameEvents.OnLevelCompleted += HandleLevelCompleted;
     }
 
     private void OnDisable()
@@ -21,6 +27,10 @@ public class UIManager : MonoBehaviour
         UIEvents.OnPlayButtonClicked -= HandlePlayButtonClicked;
         UIEvents.OnCreditsButtonClicked -= HandleCreditButtonClicked;
         UIEvents.OnSettingsButtonClicked -= HandleSettingsButtonClicked;
+        UIEvents.OnLevelButtonClicked -= HandleLevelButtonClicked;
+        UIEvents.OnMainMenuButtonClicked -= HandleMainMenuButtonClicked;
+        GameEvents.OnLevelLoaded -= HandleLevelLoaded;
+        GameEvents.OnLevelCompleted -= HandleLevelCompleted;
     }
 
     private void Start()
@@ -49,6 +59,27 @@ public class UIManager : MonoBehaviour
     private void HandleSettingsButtonClicked()
     {
         settingsUI.gameObject.SetActive(true);
+    }
+
+    private void HandleLevelButtonClicked(string chapterName, int currentLevelIndex)
+    {
+        SwitchToUI(mainGameUI.gameObject);
+    }
+
+    private void HandleLevelLoaded(LevelDTO levelDTO)
+    {
+        mainGameUI.SetupMainGameUI(levelDTO);
+    }
+
+    private void HandleLevelCompleted(bool canLoadNextLevel, ResultData resultData)
+    {
+        completedUI.SetupCompletedUI(canLoadNextLevel, resultData);
+        completedUI.gameObject.SetActive(true);
+    }
+
+    private void HandleMainMenuButtonClicked()
+    {
+        SwitchToUI(mainMenuUI.gameObject);
     }
 
     public void OnCloseButtonClicked(GameObject uiElement)
