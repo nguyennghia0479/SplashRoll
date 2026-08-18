@@ -9,7 +9,8 @@ public class LevelUI : MonoBehaviour
     [SerializeField] private TMP_Text levelText;
 
     private int level;
-    private LevelSO levelSO;
+    private string levelDBName;
+    private LevelDTO levelDTO;
 
     private void OnEnable()
     {
@@ -21,22 +22,24 @@ public class LevelUI : MonoBehaviour
         levelButton.onClick.RemoveListener(OnLevelButtonClicked);
     }
 
-    public void SetupLevelUI(int level, LevelSO levelSO)
+    public void SetupLevelUI(int level, string levelDBName, LevelDTO levelDTO)
     {
         this.level = level;
-        this.levelSO = levelSO;
+        this.levelDBName = levelDBName;
+        this.levelDTO = levelDTO;
+
         UpdateLevelButton();
     }
 
     private void UpdateLevelButton()
     {
-        levelButton.interactable = levelSO.IsUnlocked;
-        levelText.text = levelSO.IsUnlocked ? level.ToString() : "X";
-        completeIcon.gameObject.SetActive(levelSO.IsCompleted);
+        levelButton.interactable = levelDTO.IsUnlocked;
+        levelText.text = levelDTO.IsUnlocked ? (level + 1).ToString() : "X";
+        completeIcon.gameObject.SetActive(levelDTO.IsCompleted);
     }
 
     private void OnLevelButtonClicked()
     {
-        Debug.Log("Load level " + levelSO.name);
+        UIEvents.RaiseLevelButtonClicked(levelDBName, level);
     }
 }

@@ -1,18 +1,19 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelSelectUI : MonoBehaviour
 {
-    [SerializeField] private LevelDatabaseSO[] leveDatabases;
-
     [SerializeField] private TMP_Text levelDBText;
     [Header("Button Elements")]
     [SerializeField] private Button previousButton;
     [SerializeField] private Button nextButton;
 
+    private LevelManager levelManager;
     private LevelDatabaseSO currentLevelDB;
     private int currentLevelDBIndex;
+    private int levelDBAmount;
     private LevelUI[] levelUIs;
 
     private void Awake()
@@ -22,21 +23,36 @@ public class LevelSelectUI : MonoBehaviour
 
     private void OnEnable()
     {
-        previousButton.onClick.AddListener(OnPreviousButtonClicked);
-        nextButton.onClick.AddListener(OnNextButtonClicked);
+        if (levelManager == null)
+            return;
+
+        if (previousButton != null)
+            previousButton.onClick.AddListener(OnPreviousButtonClicked);
+
+        if (nextButton != null)
+            nextButton.onClick.AddListener(OnNextButtonClicked);
 
         UpdateLevelSelectUI();
     }
 
     private void OnDisable()
     {
-        previousButton.onClick.RemoveListener(OnPreviousButtonClicked);
-        nextButton.onClick.RemoveListener (OnNextButtonClicked);
+        if (previousButton != null)
+            previousButton.onClick.RemoveListener(OnPreviousButtonClicked);
+
+        if (nextButton != null)
+            nextButton.onClick.RemoveListener(OnNextButtonClicked);
+    }
+
+    private void Start()
+    {
+        levelManager = LevelManager.Instance;
+        levelDBAmount = levelManager.GetLevelDatabasesAmount();
     }
 
     private void UpdateLevelSelectUI()
     {
-        currentLevelDB = leveDatabases[currentLevelDBIndex];
+        currentLevelDB = levelManager.GetLevelDatabaseByIndex(currentLevelDBIndex);
         UpdateLevelDBName();
         UpdateLevelUIs();
     }
@@ -45,7 +61,7 @@ public class LevelSelectUI : MonoBehaviour
     {
         currentLevelDBIndex--;
         if (currentLevelDBIndex < 0)
-            currentLevelDBIndex = leveDatabases.Length - 1;
+            currentLevelDBIndex = levelDBAmount - 1;
 
         UpdateLevelSelectUI();
     }
@@ -53,7 +69,7 @@ public class LevelSelectUI : MonoBehaviour
     private void OnNextButtonClicked()
     {
         currentLevelDBIndex++;
-        if (currentLevelDBIndex > leveDatabases.Length - 1)
+        if (currentLevelDBIndex > levelDBAmount - 1)
             currentLevelDBIndex = 0;
 
         UpdateLevelSelectUI();
@@ -66,20 +82,19 @@ public class LevelSelectUI : MonoBehaviour
 
     private void UpdateLevelUIs()
     {
-        foreach(var levelUI in levelUIs)
+        List<LevelDTO> levelDTOs = levelManager.GetLevelsByChapter(currentLevelDB.LevelDBName);
+
+        foreach (var levelUI in levelUIs)
             levelUI.gameObject.SetActive(false);
 
-        int level = 1;
         for (int i = 0; i < levelUIs.Length; i++)
         {
             LevelUI levelUI = levelUIs[i];
 
-            if (i < currentLevelDB.LevelSOs.Length)
+            if (i < levelDTOs.Count)
             {
-                LevelSO levelSO = currentLevelDB.LevelSOs[i];
-                levelUI.SetupLevelUI(level, levelSO);
+                levelUI.SetupLevelUI(i, currentLevelDB.LevelDBName, levelDTOs[i]);
                 levelUI.gameObject.SetActive(true);
-                level++;
             }
             else
                 levelUI.gameObject.SetActive(false);
