@@ -1,11 +1,17 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class LevelSelectUI : MonoBehaviour
 {
-    [SerializeField] private TMP_Text levelDBText;
+    [Header("Localization Elements")]
+    [SerializeField] private LocalizedString stageLocalizedString;
+    [SerializeField] private string tableReference;
+    [SerializeField] private string stageKey;
+    [SerializeField] private TMP_Text stageText;
+
     [Header("Button Elements")]
     [SerializeField] private Button previousButton;
     [SerializeField] private Button nextButton;
@@ -15,9 +21,11 @@ public class LevelSelectUI : MonoBehaviour
     private int currentLevelDBIndex;
     private int levelDBAmount;
     private LevelUI[] levelUIs;
+    private string stageName;
 
     private void Awake()
     {
+        stageLocalizedString = new(tableReference, stageKey);
         levelUIs = GetComponentsInChildren<LevelUI>();
     }
 
@@ -32,6 +40,7 @@ public class LevelSelectUI : MonoBehaviour
         if (nextButton != null)
             nextButton.onClick.AddListener(OnNextButtonClicked);
 
+        stageLocalizedString.StringChanged += UpdateStageText;
         UpdateLevelSelectUI();
     }
 
@@ -42,6 +51,8 @@ public class LevelSelectUI : MonoBehaviour
 
         if (nextButton != null)
             nextButton.onClick.RemoveListener(OnNextButtonClicked);
+
+        stageLocalizedString.StringChanged -= UpdateStageText;
     }
 
     private void Start()
@@ -77,8 +88,11 @@ public class LevelSelectUI : MonoBehaviour
 
     private void UpdateLevelDBName()
     {
-        levelDBText.text = currentLevelDB.LevelDBName;
+        stageName = currentLevelDB.LevelDBName;
+        stageLocalizedString.RefreshString();
     }
+
+    private void UpdateStageText(string value) => stageText.text = string.Format(value, stageName);
 
     private void UpdateLevelUIs()
     {

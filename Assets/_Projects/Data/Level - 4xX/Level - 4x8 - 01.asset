@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Level - 4x8 - 01
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   levelId: 4x8_01
+  gridSize: 4x8
+  levelNumber: 1
   levelData:
     gridWidth: 4
     gridHeight: 8

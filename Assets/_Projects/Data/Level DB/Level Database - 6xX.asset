@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c01e96a136eeec448ffbb565b13b9d1, type: 3}
   m_Name: Level Database - 6xX
   m_EditorClassIdentifier: Assembly-CSharp::LeveDatabaseSO
-  levelDBName: Stage 6xX
+  levelDBName: 6xX
   levelSOs:
   - {fileID: 11400000, guid: f1edaa0cedd499e4c9d6c3dc5bc1b320, type: 2}
   - {fileID: 11400000, guid: 81d422fcf9e6dfe4baa559d62217fc9d, type: 2}

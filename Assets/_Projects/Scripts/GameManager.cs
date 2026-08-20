@@ -54,9 +54,8 @@ public class GameManager : MonoBehaviour
     private void LevelCompleted()
     {
         bool canLoadNextLevel = levelManager.CanLoadNextLevel();
-        string levelName = levelManager.GetLevelName();
-
-        ResultData resultData = new(levelName, moves, moves);
+        LevelDTO currentLevel = levelManager.GetCurrentLevel();
+        ResultData resultData = new(currentLevel.GridSize, currentLevel.LevelNumber, moves, moves);
         GameEvents.RaiseLevelCompleted(canLoadNextLevel, resultData);
     }
 
@@ -65,13 +64,15 @@ public class GameManager : MonoBehaviour
 
 public struct ResultData
 {
-    public string levelName;
+    public string gridSize;
+    public int levelNumber;
     public int moves;
     public int best;
 
-    public ResultData(string levelName, int moves, int best)
+    public ResultData(string gridSize, int levelNumber, int moves, int best)
     {
-        this.levelName = levelName;
+        this.gridSize = gridSize;
+        this.levelNumber = levelNumber;
         this.moves = moves;
         this.best = best;
     }

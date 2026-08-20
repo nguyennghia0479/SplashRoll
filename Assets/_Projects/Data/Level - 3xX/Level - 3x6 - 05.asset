@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Level - 3x6 - 05
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   levelId: 3x6_05
+  gridSize: 3x6
+  levelNumber: 5
   levelData:
     gridWidth: 3
     gridHeight: 6

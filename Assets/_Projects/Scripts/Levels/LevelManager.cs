@@ -54,7 +54,7 @@ public class LevelManager : MonoBehaviour
             {
                 bool defaultUnlocked = levelIndex == 0;
                 LevelSO levelSO = levelSOs[j];
-                LevelDTO levelDTO = new(levelSO.LevelId, levelSO.name, levelSO.LevelData, defaultUnlocked, false);
+                LevelDTO levelDTO = new(levelSO.LevelId, levelSO.name, levelSO.LevelData, defaultUnlocked, false, levelSO.GridSize, levelSO.LevelNumber);
                 levelDTOs.Add(levelDTO);
 
                 levelIndex++;
@@ -139,5 +139,5 @@ public class LevelManager : MonoBehaviour
     public List<LevelDTO> GetLevelsByChapter(string chapterName) => levelDTODict[chapterName];
     public int GetLevelDatabasesAmount() => levelDatabases.Length;
     public LevelDatabaseSO GetLevelDatabaseByIndex(int index) => levelDatabases[index];
-    public string GetLevelName() => currentLevel.LevelName;
+    public LevelDTO GetCurrentLevel() => currentLevel;
 }

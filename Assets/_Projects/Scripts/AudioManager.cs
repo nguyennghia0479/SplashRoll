@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
     private void OnEnable()
     {
         UIEvents.OnButtonClicked += HandleButtonClicked;
+        UIEvents.OnLocaleChanged += HandleLocaleChanged;
         GameEvents.OnCellPainted += HandlePlayCellPainted;
         GameEvents.OnLevelCompleted += HandleLevelCompleted;
     }
@@ -31,11 +32,13 @@ public class AudioManager : MonoBehaviour
     private void OnDisable()
     {
         UIEvents.OnButtonClicked -= HandleButtonClicked;
+        UIEvents.OnLocaleChanged -= HandleLocaleChanged;
         GameEvents.OnCellPainted -= HandlePlayCellPainted;
         GameEvents.OnLevelCompleted -= HandleLevelCompleted;
     }
 
     private void HandleButtonClicked() => PlayAudio(AudioType.Button);
+    private void HandleLocaleChanged(string locale) => PlayAudio(AudioType.Button);
     private void HandlePlayCellPainted() => PlayAudio(AudioType.Painted);
     private void HandleLevelCompleted(bool canLoadNextLevel, ResultData resultData) => PlayAudio(AudioType.Completed);
 
