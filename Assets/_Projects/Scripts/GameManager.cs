@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
 
         emptyCellAmount--;
         if (emptyCellAmount <= 0)
-            Invoke(nameof(LevelCompleted), .5f);
+            Invoke(nameof(LevelCompleted), 1f);
     }
 
     private void LevelCompleted()

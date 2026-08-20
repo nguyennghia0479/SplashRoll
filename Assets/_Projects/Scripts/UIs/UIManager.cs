@@ -85,5 +85,6 @@ public class UIManager : MonoBehaviour
     public void OnCloseButtonClicked(GameObject uiElement)
     {
         uiElement.SetActive(false);
+        UIEvents.RaiseButtonClicked();
     }
 }
