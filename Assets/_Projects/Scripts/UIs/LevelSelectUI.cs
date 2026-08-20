@@ -83,6 +83,7 @@ public class LevelSelectUI : MonoBehaviour
     private void UpdateLevelUIs()
     {
         List<LevelDTO> levelDTOs = levelManager.GetLevelsByChapter(currentLevelDB.LevelDBName);
+        levelManager.UpdateCurrentLevelDatabaseIndex(currentLevelDBIndex);
 
         foreach (var levelUI in levelUIs)
             levelUI.gameObject.SetActive(false);

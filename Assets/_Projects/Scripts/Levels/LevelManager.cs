@@ -11,6 +11,7 @@ public class LevelManager : MonoBehaviour
     private List<LevelDTO> levelDTOs;
     private LevelDTO currentLevel;
     private int currentLevelIndex;
+    private int currentLevelDBIndex;
 
     public void Awake()
     {
@@ -51,7 +52,7 @@ public class LevelManager : MonoBehaviour
 
             for (int j = 0; j < levelSOs.Length; j++)
             {
-                bool defaultUnlocked = levelIndex == 18;
+                bool defaultUnlocked = levelIndex == 0;
                 LevelSO levelSO = levelSOs[j];
                 LevelDTO levelDTO = new(levelSO.LevelId, levelSO.name, levelSO.LevelData, defaultUnlocked, false);
                 levelDTOs.Add(levelDTO);
@@ -70,9 +71,9 @@ public class LevelManager : MonoBehaviour
         currentLevelIndex = 0;
     }
 
-    private void HandleLevelButtonClicked(string chapterName, int currentLevelIndex)
+    private void HandleLevelButtonClicked(string stageName, int currentLevelIndex)
     {
-        levelDTOs = levelDTODict[chapterName];
+        levelDTOs = levelDTODict[stageName];
         this.currentLevelIndex = currentLevelIndex;
         LoadLevel();
     }
@@ -113,9 +114,27 @@ public class LevelManager : MonoBehaviour
 
         if (canLoadNextLevel)
             levelDTOs[nextLevelIndex].Unlocked();
-
+        else
+            UnlockNextStage();
+     
         return canLoadNextLevel;
     }
+
+    private void UnlockNextStage()
+    {
+        currentLevelDBIndex++;
+        if (currentLevelDBIndex >= levelDTOs.Count)
+        {
+            Debug.Log("You have completed all level. Congratulations!");
+            return;
+        }
+
+        LevelDatabaseSO levelDatabase = levelDatabases[currentLevelDBIndex];
+        levelDTOs = levelDTODict[levelDatabase.LevelDBName];
+        levelDTOs[0].Unlocked();
+    }
+
+    public void UpdateCurrentLevelDatabaseIndex(int index) => currentLevelDBIndex = index;
 
     public List<LevelDTO> GetLevelsByChapter(string chapterName) => levelDTODict[chapterName];
     public int GetLevelDatabasesAmount() => levelDatabases.Length;

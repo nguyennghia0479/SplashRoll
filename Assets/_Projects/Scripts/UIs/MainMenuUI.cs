@@ -36,6 +36,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void OnQuitButtonClicked()
     {
+        UIEvents.RaiseButtonClicked();
         Application.Quit();
     }
 
