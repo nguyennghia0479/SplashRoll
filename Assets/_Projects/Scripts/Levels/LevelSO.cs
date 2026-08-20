@@ -5,7 +5,15 @@ using UnityEngine;
 public class LevelSO : ScriptableObject
 {
     [SerializeField] private string levelId;
+    [SerializeField] private string gridSize;
+    [SerializeField] private int levelNumber;
     [SerializeField] private LevelData levelData;
+
+    private void OnValidate()
+    {
+        gridSize = $"{levelData.gridWidth}x{levelData.gridHeight}";
+        levelId = $"{gridSize}_{levelNumber}";
+    }
 
     public void SaveLevelSO(LevelData levelData)
     {
@@ -13,6 +21,8 @@ public class LevelSO : ScriptableObject
     }
 
     public string LevelId => levelId;
+    public string GridSize => gridSize;
+    public int LevelNumber => levelNumber;
     public LevelData LevelData => levelData;
     public int GridWidth => levelData.gridWidth;
     public int GridHeight => levelData.gridHeight;

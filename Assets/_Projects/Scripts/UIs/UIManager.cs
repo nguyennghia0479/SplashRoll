@@ -61,7 +61,7 @@ public class UIManager : MonoBehaviour
         settingsUI.gameObject.SetActive(true);
     }
 
-    private void HandleLevelButtonClicked(string chapterName, int currentLevelIndex)
+    private void HandleLevelButtonClicked(string stageName, int currentLevelIndex)
     {
         SwitchToUI(mainGameUI.gameObject);
     }

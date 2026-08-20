@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e21f1fa1f5692414f89ffad0ff04a08f, type: 3}
   m_Name: Level - 6x7 - 01
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
-  levelId: 6x7_01
+  levelId: 6x7_1
+  gridSize: 6x7
+  levelNumber: 1
   levelData:
     gridWidth: 6
     gridHeight: 7

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class MainGameUI : MonoBehaviour
@@ -14,7 +15,24 @@ public class MainGameUI : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button restartButton;
 
-    private int moves;
+    [Header("Localization Elements")]
+    [SerializeField] private string tableReference;
+    [Space]
+    [SerializeField] private LocalizedString levelLocalizedString;
+    [SerializeField] private string levelKey;
+
+    [Space]
+    [SerializeField] private LocalizedString movesLocalizedString;
+    [SerializeField] private string movesKey;
+
+    private int currentMoves;
+    private LevelDTO levelDTO;
+
+    private void Awake()
+    {
+        levelLocalizedString = new(tableReference, levelKey);
+        movesLocalizedString = new(tableReference, movesKey);
+    }
 
     private void OnEnable()
     {
@@ -28,6 +46,9 @@ public class MainGameUI : MonoBehaviour
 
         if (restartButton != null)
             restartButton.onClick.AddListener(OnRestartButtonClicked);
+
+        levelLocalizedString.StringChanged += UpdateLevelText;
+        movesLocalizedString.StringChanged += UpdateMovesText;
     }
 
     private void OnDisable()
@@ -42,22 +63,31 @@ public class MainGameUI : MonoBehaviour
 
         if (restartButton != null)
             restartButton.onClick.RemoveListener(OnRestartButtonClicked);
+
+        levelLocalizedString.StringChanged -= UpdateLevelText;
+        movesLocalizedString.StringChanged -= UpdateMovesText;
     }
 
     public void SetupMainGameUI(LevelDTO levelDTO)
     {
-        moves = 0;
-
-        levelText.text = levelDTO.LevelName;
-        movesText.text = "Moves: " + moves;
+        this.levelDTO = levelDTO;
+        currentMoves = 0;
+        
         bestText.text = "Best: ";
+
+        levelLocalizedString.RefreshString();
+        movesLocalizedString.RefreshString();
     }
 
     private void HandleBallMoved()
     {
-        moves++;
-        movesText.text = "Moves: " + moves.ToString();
+        currentMoves++;
+        movesLocalizedString.RefreshString();
     }
+
+    private void UpdateLevelText(string value) => levelText.text = string.Format(value, levelDTO.GridSize, levelDTO.LevelNumber);
+
+    private void UpdateMovesText(string value) => movesText.text = string.Format(value, currentMoves);
 
     private void OnMainMenuButtonClicked()
     {

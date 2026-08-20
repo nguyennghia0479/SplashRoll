@@ -11,6 +11,7 @@ public static class UIEvents
     public static event Action OnRestartButtonClicked;
     public static event Action OnNextLevelButtonClicked;
     public static event Action OnButtonClicked;
+    public static event Action<string> OnLocaleChanged;
 
     public static void RaisePlayButtonClicked()
     {
@@ -57,5 +58,10 @@ public static class UIEvents
     public static void RaiseButtonClicked()
     {
         OnButtonClicked?.Invoke();
+    }
+
+    public static void RaiseLocaleChange(string locale)
+    {
+        OnLocaleChanged?.Invoke(locale);
     }
 }

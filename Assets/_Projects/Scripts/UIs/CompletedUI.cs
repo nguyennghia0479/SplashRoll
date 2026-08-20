@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class CompletedUI : MonoBehaviour
@@ -15,6 +16,24 @@ public class CompletedUI : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button nextLevelButton;
 
+    [Header("Localization Elements")]
+    [SerializeField] private string tableReference;
+    [Space]
+    [SerializeField] private LocalizedString levelLocalizedString;
+    [SerializeField] private string levelKey;
+
+    [Space]
+    [SerializeField] private LocalizedString movesLocalizedString;
+    [SerializeField] private string movesKey;
+
+    private ResultData resultData;
+
+    private void Awake()
+    {
+        levelLocalizedString = new(tableReference, levelKey);
+        movesLocalizedString = new(tableReference, movesKey);
+    }
+
     private void OnEnable()
     {
         if (restartButton != null)
@@ -25,6 +44,9 @@ public class CompletedUI : MonoBehaviour
 
         if (nextLevelButton != null)
             nextLevelButton.onClick.AddListener(OnNextLevelButtonClicked);
+
+        levelLocalizedString.StringChanged += UpdateLevelText;
+        movesLocalizedString.StringChanged += UpdateMovesText;
     }
 
     private void OnDisable()
@@ -37,17 +59,26 @@ public class CompletedUI : MonoBehaviour
 
         if (nextLevelButton != null)
             nextLevelButton.onClick.RemoveListener(OnNextLevelButtonClicked);
+
+        levelLocalizedString.StringChanged -= UpdateLevelText;
+        movesLocalizedString.StringChanged -= UpdateMovesText;
     }
 
     public void SetupCompletedUI(bool canLoadNextLevel, ResultData resultData)
     {
+        this.resultData = resultData;
+
         stageText.gameObject.SetActive(!canLoadNextLevel);
         nextLevelButton.gameObject.SetActive(canLoadNextLevel);
 
-        levelText.text = resultData.levelName;
-        movesText.text = "Moves: " + resultData.moves.ToString();
+        levelLocalizedString.RefreshString();
+        movesLocalizedString.RefreshString();
         bestText.text = "Best: " + resultData.best.ToString();
     }
+
+    private void UpdateLevelText(string value) => levelText.text = string.Format(value, resultData.gridSize, resultData.levelNumber);
+
+    private void UpdateMovesText(string value) => movesText.text = string.Format(value, resultData.moves);
 
     private void OnRestartButtonClicked()
     {
