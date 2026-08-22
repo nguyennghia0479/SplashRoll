@@ -1,9 +1,8 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.UI;
 
-public class MainGameUI : MonoBehaviour
+public class MainGameUI : InfoUI
 {
     [Header("Text Elements")]
     [SerializeField] private TMP_Text levelText;
@@ -15,27 +14,12 @@ public class MainGameUI : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button restartButton;
 
-    [Header("Localization Elements")]
-    [SerializeField] private string tableReference;
-    [Space]
-    [SerializeField] private LocalizedString levelLocalizedString;
-    [SerializeField] private string levelKey;
-
-    [Space]
-    [SerializeField] private LocalizedString movesLocalizedString;
-    [SerializeField] private string movesKey;
-
     private int currentMoves;
     private LevelDTO levelDTO;
 
-    private void Awake()
+    protected override void OnEnable()
     {
-        levelLocalizedString = new(tableReference, levelKey);
-        movesLocalizedString = new(tableReference, movesKey);
-    }
-
-    private void OnEnable()
-    {
+        base.OnEnable();
         GameEvents.OnBallMoved += HandleBallMoved;
 
         if (mainMenuButton != null)
@@ -46,13 +30,11 @@ public class MainGameUI : MonoBehaviour
 
         if (restartButton != null)
             restartButton.onClick.AddListener(OnRestartButtonClicked);
-
-        levelLocalizedString.StringChanged += UpdateLevelText;
-        movesLocalizedString.StringChanged += UpdateMovesText;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         GameEvents.OnBallMoved -= HandleBallMoved;
 
         if (mainMenuButton != null)
@@ -63,9 +45,6 @@ public class MainGameUI : MonoBehaviour
 
         if (restartButton != null)
             restartButton.onClick.RemoveListener(OnRestartButtonClicked);
-
-        levelLocalizedString.StringChanged -= UpdateLevelText;
-        movesLocalizedString.StringChanged -= UpdateMovesText;
     }
 
     public void SetupMainGameUI(LevelDTO levelDTO)
@@ -73,10 +52,9 @@ public class MainGameUI : MonoBehaviour
         this.levelDTO = levelDTO;
         currentMoves = 0;
         
-        bestText.text = "Best: ";
-
         levelLocalizedString.RefreshString();
         movesLocalizedString.RefreshString();
+        bestLocalizedString.RefreshString();
     }
 
     private void HandleBallMoved()
@@ -85,9 +63,11 @@ public class MainGameUI : MonoBehaviour
         movesLocalizedString.RefreshString();
     }
 
-    private void UpdateLevelText(string value) => levelText.text = string.Format(value, levelDTO.GridSize, levelDTO.LevelNumber);
+    protected override void UpdateLevelText(string value) => levelText.text = string.Format(value, levelDTO.GridSize, levelDTO.LevelNumber);
 
-    private void UpdateMovesText(string value) => movesText.text = string.Format(value, currentMoves);
+    protected override void UpdateMovesText(string value) => movesText.text = string.Format(value, currentMoves);
+
+    protected override void UpdateBestText(string value) => bestText.text = string.Format(value, levelDTO.Best);
 
     private void OnMainMenuButtonClicked()
     {

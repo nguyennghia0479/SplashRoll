@@ -54,9 +54,21 @@ public class LevelManager : MonoBehaviour
             {
                 bool defaultUnlocked = levelIndex == 0;
                 LevelSO levelSO = levelSOs[j];
-                LevelDTO levelDTO = new(levelSO.LevelId, levelSO.name, levelSO.LevelData, defaultUnlocked, false, levelSO.GridSize, levelSO.LevelNumber);
-                levelDTOs.Add(levelDTO);
+                LevelDTO levelDTO = new(levelSO.LevelId, levelSO.LevelData, defaultUnlocked, false, levelSO.GridSize, levelSO.LevelNumber);
+                
+                LevelSaveData dataLoaded = SaveManager.LoadLevel(levelSO.LevelId);
+                if (dataLoaded != null)
+                {
+                    if (dataLoaded.isUnlocked)
+                        levelDTO.Unlocked();
 
+                    if (dataLoaded.isCompleted)
+                        levelDTO.Complete();
+
+                    levelDTO.UpdateBest(dataLoaded.best);
+                }
+
+                levelDTOs.Add(levelDTO);
                 levelIndex++;
             }
 
@@ -108,16 +120,28 @@ public class LevelManager : MonoBehaviour
 
     public bool CanLoadNextLevel()
     {
-        currentLevel.Complete();
         int nextLevelIndex = currentLevelIndex + 1;
         bool canLoadNextLevel = nextLevelIndex < levelDTOs.Count;
 
         if (canLoadNextLevel)
-            levelDTOs[nextLevelIndex].Unlocked();
+            UnlockNextLevel(nextLevelIndex);
         else
             UnlockNextStage();
-     
+
         return canLoadNextLevel;
+    }
+
+    public void CompleteLevel(int moves)
+    {
+        currentLevel.Complete();
+        SaveLevelCompleted(moves);
+    }
+
+    private void UnlockNextLevel(int nextLevelIndex)
+    {
+        LevelDTO nextLevel = levelDTOs[nextLevelIndex];
+        nextLevel.Unlocked();
+        SaveNextLevelUnlocked(nextLevel);
     }
 
     private void UnlockNextStage()
@@ -132,6 +156,33 @@ public class LevelManager : MonoBehaviour
         LevelDatabaseSO levelDatabase = levelDatabases[currentLevelDBIndex];
         levelDTOs = levelDTODict[levelDatabase.LevelDBName];
         levelDTOs[0].Unlocked();
+        SaveNextLevelUnlocked(levelDTOs[0]);
+    }
+
+    private void SaveLevelCompleted(int moves)
+    {
+        LevelSaveData dataLoaded = SaveManager.LoadLevel(currentLevel.LevelId);
+        if (dataLoaded == null)
+            dataLoaded = new(currentLevel.LevelId, currentLevel.IsUnlocked, currentLevel.IsCompleted, moves);
+        else
+        {
+            dataLoaded.best = (dataLoaded.best <= 0 || dataLoaded.best > moves) ? moves : dataLoaded.best;
+            dataLoaded.isCompleted = currentLevel.IsCompleted;
+        }
+
+        currentLevel.UpdateBest(dataLoaded.best);
+        SaveManager.SaveLevel(currentLevel.LevelId, dataLoaded);
+    }
+
+    private void SaveNextLevelUnlocked(LevelDTO nextLevel)
+    {
+        LevelSaveData dataLoaded = SaveManager.LoadLevel(nextLevel.LevelId);
+        if (dataLoaded == null)
+            dataLoaded = new(nextLevel.LevelId, nextLevel.IsUnlocked, nextLevel.IsCompleted, 0);
+        else
+            dataLoaded.isUnlocked = nextLevel.IsUnlocked;
+
+        SaveManager.SaveLevel(nextLevel.LevelId, dataLoaded);
     }
 
     public void UpdateCurrentLevelDatabaseIndex(int index) => currentLevelDBIndex = index;
@@ -140,4 +191,21 @@ public class LevelManager : MonoBehaviour
     public int GetLevelDatabasesAmount() => levelDatabases.Length;
     public LevelDatabaseSO GetLevelDatabaseByIndex(int index) => levelDatabases[index];
     public LevelDTO GetCurrentLevel() => currentLevel;
+}
+
+[System.Serializable]
+public class LevelSaveData
+{
+    public string levelId;
+    public bool isUnlocked;
+    public bool isCompleted;
+    public int best;
+
+    public LevelSaveData(string levelId, bool isUnlocked, bool isCompleted, int best)
+    {
+        this.levelId = levelId;
+        this.isUnlocked = isUnlocked;
+        this.isCompleted = isCompleted;
+        this.best = best;
+    }
 }

@@ -34,6 +34,10 @@ MonoBehaviour:
     m_Localized: 'Moves: {0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 501898696761344
+    m_Localized: 'Best: {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -23,6 +23,10 @@ MonoBehaviour:
     m_Key: mainGame.level
     m_Metadata:
       m_Items: []
+  - m_Id: 488341779292160
+    m_Key: mainGame.best
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

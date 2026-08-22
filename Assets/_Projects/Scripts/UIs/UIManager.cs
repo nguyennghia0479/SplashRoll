@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        settingsUI.LoadSettings();
         SwitchToUI(mainMenuUI.gameObject);
     }
 

@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: completed.moves
     m_Metadata:
       m_Items: []
+  - m_Id: 501898696761344
+    m_Key: completed.best
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

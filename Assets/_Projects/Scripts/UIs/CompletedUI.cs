@@ -1,9 +1,8 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.UI;
 
-public class CompletedUI : MonoBehaviour
+public class CompletedUI : InfoUI
 {
     [Header("Text Elements")]
     [SerializeField] private TMP_Text levelText;
@@ -16,26 +15,12 @@ public class CompletedUI : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private Button nextLevelButton;
 
-    [Header("Localization Elements")]
-    [SerializeField] private string tableReference;
-    [Space]
-    [SerializeField] private LocalizedString levelLocalizedString;
-    [SerializeField] private string levelKey;
-
-    [Space]
-    [SerializeField] private LocalizedString movesLocalizedString;
-    [SerializeField] private string movesKey;
-
     private ResultData resultData;
 
-    private void Awake()
+    protected override void OnEnable()
     {
-        levelLocalizedString = new(tableReference, levelKey);
-        movesLocalizedString = new(tableReference, movesKey);
-    }
+        base.OnEnable();
 
-    private void OnEnable()
-    {
         if (restartButton != null)
             restartButton.onClick.AddListener(OnRestartButtonClicked);
 
@@ -44,13 +29,12 @@ public class CompletedUI : MonoBehaviour
 
         if (nextLevelButton != null)
             nextLevelButton.onClick.AddListener(OnNextLevelButtonClicked);
-
-        levelLocalizedString.StringChanged += UpdateLevelText;
-        movesLocalizedString.StringChanged += UpdateMovesText;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         if (restartButton != null)
             restartButton.onClick.RemoveListener(OnRestartButtonClicked);
 
@@ -59,9 +43,6 @@ public class CompletedUI : MonoBehaviour
 
         if (nextLevelButton != null)
             nextLevelButton.onClick.RemoveListener(OnNextLevelButtonClicked);
-
-        levelLocalizedString.StringChanged -= UpdateLevelText;
-        movesLocalizedString.StringChanged -= UpdateMovesText;
     }
 
     public void SetupCompletedUI(bool canLoadNextLevel, ResultData resultData)
@@ -73,12 +54,14 @@ public class CompletedUI : MonoBehaviour
 
         levelLocalizedString.RefreshString();
         movesLocalizedString.RefreshString();
-        bestText.text = "Best: " + resultData.best.ToString();
+        bestLocalizedString.RefreshString();
     }
 
-    private void UpdateLevelText(string value) => levelText.text = string.Format(value, resultData.gridSize, resultData.levelNumber);
+    protected override void UpdateLevelText(string value) => levelText.text = string.Format(value, resultData.gridSize, resultData.levelNumber);
 
-    private void UpdateMovesText(string value) => movesText.text = string.Format(value, resultData.moves);
+    protected override void UpdateMovesText(string value) => movesText.text = string.Format(value, resultData.moves);
+
+    protected override void UpdateBestText(string value) => bestText.text = string.Format(value, resultData.best);
 
     private void OnRestartButtonClicked()
     {

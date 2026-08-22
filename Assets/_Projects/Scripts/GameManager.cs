@@ -53,9 +53,10 @@ public class GameManager : MonoBehaviour
 
     private void LevelCompleted()
     {
+        levelManager.CompleteLevel(moves);
         bool canLoadNextLevel = levelManager.CanLoadNextLevel();
         LevelDTO currentLevel = levelManager.GetCurrentLevel();
-        ResultData resultData = new(currentLevel.GridSize, currentLevel.LevelNumber, moves, moves);
+        ResultData resultData = new(currentLevel.GridSize, currentLevel.LevelNumber, moves, currentLevel.Best);
         GameEvents.RaiseLevelCompleted(canLoadNextLevel, resultData);
     }
 
