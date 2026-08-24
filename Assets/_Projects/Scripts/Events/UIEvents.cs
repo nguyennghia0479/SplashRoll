@@ -4,6 +4,7 @@ using UnityEngine;
 public static class UIEvents
 {
     public static event Action OnPlayButtonClicked;
+    public static event Action OnTutorialButtonClicked;
     public static event Action OnCreditsButtonClicked;
     public static event Action OnSettingsButtonClicked;
     public static event Action<string, int> OnLevelButtonClicked;
@@ -16,6 +17,12 @@ public static class UIEvents
     public static void RaisePlayButtonClicked()
     {
         OnPlayButtonClicked?.Invoke();
+        OnButtonClicked?.Invoke();
+    }
+
+    public static void RaiseTutorialButtonClicked()
+    {
+        OnTutorialButtonClicked?.Invoke();
         OnButtonClicked?.Invoke();
     }
 

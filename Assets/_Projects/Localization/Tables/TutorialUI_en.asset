@@ -10,24 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: MainMenuUI_vi-VN
+  m_Name: TutorialUI_en
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
   m_LocaleId:
-    m_Code: vi-VN
-  m_SharedData: {fileID: 11400000, guid: 1e9281a0565bbc3499086c2645785438, type: 2}
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 5e44f90f5e558db4382ae07960434290, type: 2}
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 510908735488
-    m_Localized: "Tho\xE1t"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 615799889920
-    m_Localized: "C\xE1ch Ch\u01A1i"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 346928226304
-    m_Localized: "B\u1EAET \u0110\u1EA6U"
+  - m_Id: 10528268288
+    m_Localized: '- Click and drag the mouse to move the ball.
+
+      - The ball
+      will keep moving until it hits a wall or the edge.
+
+      - Color all the
+      white cells to complete the level.'
     m_Metadata:
       m_Items: []
   references:

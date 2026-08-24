@@ -50,6 +50,13 @@ MonoBehaviour:
     - Locale-vi-VN
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e11f552542e39b14eae6c34c2ae5d2a6
+    m_Address: TutorialUI_vi-VN
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-vi-VN
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e73f03de2fa8674448b755b7f018ddfb
     m_Address: LevelSelectUI_vi-VN
     m_ReadOnly: 1

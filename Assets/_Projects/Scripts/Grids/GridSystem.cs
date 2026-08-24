@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GridSystem : MonoBehaviour
 {
-    [SerializeField] private Cell cellPrefab;
-    [SerializeField] private Cell wallPrefab;
+    [SerializeField] private PooledObject cellPrefab;
+    [SerializeField] private PooledObject wallPrefab;
 
     [Header("Ball Info")]
     [SerializeField] private BallMovement ballPrefab;
@@ -20,7 +20,7 @@ public class GridSystem : MonoBehaviour
     private Cell[,] gridData;
     private float gridStartX;
     private float gridStartY;
-    private int emptyCellAmount;
+    private int unpaintedCellAmount;
     private GameObject ball;
 
     private void OnEnable()
@@ -70,7 +70,7 @@ public class GridSystem : MonoBehaviour
             gridData = null;
 
         pathCells = new List<Cell>();
-        emptyCellAmount = 0;
+        unpaintedCellAmount = 0;
         Destroy(ball);
         ClearGrid();
     }
@@ -78,7 +78,16 @@ public class GridSystem : MonoBehaviour
     private void ClearGrid()
     {
         for (int i = transform.childCount - 1; i >= 0; i--)
-            Destroy(transform.GetChild(i).gameObject);
+        {
+            Transform childTransform = transform.GetChild(i);
+            if (childTransform != null && !childTransform.gameObject.activeSelf)
+                continue;
+
+            if (childTransform.TryGetComponent<PooledObject>(out var pooledObject))
+                pooledObject.ReleasePool();
+            else
+                Destroy(childTransform.gameObject);
+        }
     }
 
     private void GenerateGrid()
@@ -94,20 +103,22 @@ public class GridSystem : MonoBehaviour
                 Vector2Int currentCoord = new(i, j);
 
                 if (wallCoordinates.Contains(currentCoord))
-                {
-                    Cell newWall = Instantiate(wallPrefab, spawnPos, Quaternion.identity, transform);
-                    gridData[i, j] = newWall;
-                }
+                    CreateCell(wallPrefab, spawnPos, i, j);
                 else
                 {
-                    Cell newCell = Instantiate(cellPrefab, spawnPos, Quaternion.identity, transform);
-                    gridData[i, j] = newCell;
-                    emptyCellAmount++;
+                    CreateCell(cellPrefab, spawnPos, i, j);
+                    unpaintedCellAmount++;
                 }
             }
         }
 
-        GameEvents.RaiseEmptyCellCounted(emptyCellAmount);
+        GameEvents.RaiseUnpaintedCellCounted(unpaintedCellAmount);
+    }
+
+    private void CreateCell(PooledObject poolPrefab, Vector3 position, int coordX, int coordY)
+    {
+        Cell newCell = ObjectPoolManager.Instance.GetPool(poolPrefab, position, Quaternion.identity) as Cell;
+        gridData[coordX, coordY] = newCell;
     }
 
     private void GenerateBall()
