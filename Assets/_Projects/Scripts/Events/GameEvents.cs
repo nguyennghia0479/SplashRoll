@@ -4,7 +4,7 @@ using UnityEngine;
 public static class GameEvents
 {
     public static event Action<LevelDTO> OnLevelLoaded;
-    public static event Action<int> OnEmptyCellCounted;
+    public static event Action<int> OnUnpaintedCellCounted;
     public static event Action OnCellPainted;
     public static event Action OnBallMoved;
     public static event Action<bool, ResultData> OnLevelCompleted;
@@ -14,9 +14,9 @@ public static class GameEvents
         OnLevelLoaded?.Invoke(levelDTO);
     }
 
-    public static void RaiseEmptyCellCounted(int emptyCellAmount)
+    public static void RaiseUnpaintedCellCounted(int unpaintedCellAmount)
     {
-        OnEmptyCellCounted?.Invoke(emptyCellAmount);
+        OnUnpaintedCellCounted?.Invoke(unpaintedCellAmount);
     }
 
     public static void RaiseCellPainted()

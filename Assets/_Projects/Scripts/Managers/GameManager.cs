@@ -3,7 +3,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private LevelManager levelManager;
-    private int emptyCellAmount;
+    private int unpaintedCellAmount;
     private int moves;
 
     private void OnEnable()
@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnBallMoved += HandleBallMoved;
 
         UIEvents.OnMainMenuButtonClicked += HandleMainMenuButtonClicked;
-        GameEvents.OnEmptyCellCounted += HandleEmptyCellCounted;
+        GameEvents.OnUnpaintedCellCounted += HandleUnpaintedCellCounted;
         GameEvents.OnCellPainted += HandleCellPainted;
     }
 
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnBallMoved -= HandleBallMoved;
 
         UIEvents.OnMainMenuButtonClicked -= HandleMainMenuButtonClicked;
-        GameEvents.OnEmptyCellCounted -= HandleEmptyCellCounted;
+        GameEvents.OnUnpaintedCellCounted -= HandleUnpaintedCellCounted;
         GameEvents.OnCellPainted -= HandleCellPainted;
     }
 
@@ -31,23 +31,23 @@ public class GameManager : MonoBehaviour
 
     private void HandleMainMenuButtonClicked()
     {
-        emptyCellAmount = 0;
+        unpaintedCellAmount = 0;
         moves = 0;
     }
 
-    private void HandleEmptyCellCounted(int emptyCellAmount)
+    private void HandleUnpaintedCellCounted(int unpaintedCellAmount)
     {
-        this.emptyCellAmount = emptyCellAmount;
+        this.unpaintedCellAmount = unpaintedCellAmount;
         moves = 0;
     }
 
     private void HandleCellPainted()
     {
-        if (emptyCellAmount <= 0)
+        if (unpaintedCellAmount <= 0)
             return;
 
-        emptyCellAmount--;
-        if (emptyCellAmount <= 0)
+        unpaintedCellAmount--;
+        if (unpaintedCellAmount <= 0)
             Invoke(nameof(LevelCompleted), 1f);
     }
 

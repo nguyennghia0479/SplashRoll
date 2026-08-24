@@ -6,7 +6,7 @@ public enum CellType
     Empty, Wall, Start
 }
 
-public class Cell : MonoBehaviour
+public class Cell : PooledObject
 {
     [SerializeField] private CellType cellType;
     [SerializeField] private Color paintedColor;
@@ -14,6 +14,31 @@ public class Cell : MonoBehaviour
 
     private readonly float duration = .5f;
     private bool isPainted;
+
+    public override void ReleasePool()
+    {
+        if (objectPool == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (cellType != CellType.Wall)
+            Reset();
+
+        objectPool.Release(this);
+    }
+
+    public override void Reset()
+    {
+        if (cellType == CellType.Wall)
+            return;
+
+        if (spriteCell != null)
+            spriteCell.color = Color.white;
+
+        isPainted = false;
+    }
 
     public void PaintCell()
     {

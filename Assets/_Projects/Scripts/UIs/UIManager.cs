@@ -8,12 +8,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private MainGameUI mainGameUI;
     [SerializeField] private CompletedUI completedUI;
     [SerializeField] private LevelSelectUI levelSelectUI;
+    [SerializeField] private TutorialUI tutorialUI;
     [SerializeField] private CreditsUI creditsUI;
     [SerializeField] private SettingsUI settingsUI;
 
     private void OnEnable()
     {
         UIEvents.OnPlayButtonClicked += HandlePlayButtonClicked;
+        UIEvents.OnTutorialButtonClicked += HandleTutorialButtonClicked;
         UIEvents.OnCreditsButtonClicked += HandleCreditButtonClicked;
         UIEvents.OnSettingsButtonClicked += HandleSettingsButtonClicked;
         UIEvents.OnLevelButtonClicked += HandleLevelButtonClicked;
@@ -25,6 +27,7 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         UIEvents.OnPlayButtonClicked -= HandlePlayButtonClicked;
+        UIEvents.OnTutorialButtonClicked -= HandleTutorialButtonClicked;
         UIEvents.OnCreditsButtonClicked -= HandleCreditButtonClicked;
         UIEvents.OnSettingsButtonClicked -= HandleSettingsButtonClicked;
         UIEvents.OnLevelButtonClicked -= HandleLevelButtonClicked;
@@ -50,6 +53,11 @@ public class UIManager : MonoBehaviour
     private void HandlePlayButtonClicked()
     {
         levelSelectUI.gameObject.SetActive(true);
+    }
+
+    private void HandleTutorialButtonClicked()
+    {
+        tutorialUI.gameObject.SetActive(true);
     }
 
     private void HandleCreditButtonClicked()

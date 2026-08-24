@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button playButton;
+    [SerializeField] private Button tutorialButton;
     [SerializeField] private Button creditsButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button settingsButton;
@@ -11,6 +12,7 @@ public class MainMenuUI : MonoBehaviour
     private void OnEnable()
     {
         playButton.onClick.AddListener(OnPlayButtonClicked);
+        tutorialButton.onClick.AddListener(OnTutorialButtonClicked);
         creditsButton.onClick.AddListener(OnCreditsButtonClicked);
         quitButton.onClick.AddListener(OnQuitButtonClicked);
         settingsButton.onClick.AddListener(OnSettingButtonClicked);
@@ -19,6 +21,7 @@ public class MainMenuUI : MonoBehaviour
     private void OnDisable()
     {
         playButton.onClick.RemoveListener(OnPlayButtonClicked);
+        tutorialButton.onClick.RemoveListener(OnTutorialButtonClicked);
         creditsButton.onClick.RemoveListener(OnCreditsButtonClicked);
         quitButton.onClick.RemoveListener(OnQuitButtonClicked);
         settingsButton.onClick.RemoveListener(OnSettingButtonClicked);
@@ -27,6 +30,11 @@ public class MainMenuUI : MonoBehaviour
     private void OnPlayButtonClicked()
     {
         UIEvents.RaisePlayButtonClicked();
+    }
+
+    public void OnTutorialButtonClicked()
+    {
+        UIEvents.RaiseTutorialButtonClicked();
     }
 
     private void OnCreditsButtonClicked()
