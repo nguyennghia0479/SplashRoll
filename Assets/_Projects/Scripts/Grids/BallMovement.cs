@@ -3,10 +3,12 @@ using UnityEngine;
 public class BallMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5;
+    [SerializeField] private float rotationSpeed = 300;
 
     private GameInput gameInput;
     private GridSystem gridManager;
     private Vector3 targetPos;
+    private Vector2 rollDir;
     private bool isMoving;
     private readonly float sqrtMinDistance = .01f;
 
@@ -17,7 +19,12 @@ public class BallMovement : MonoBehaviour
 
     private void Update()
     {
-        HandleMovement();   
+        HandleMovement();
+        if (isMoving)
+        {
+            float rotationAmount = -rollDir.x * Time.deltaTime * rotationSpeed;
+            transform.Rotate(0, 0, rotationAmount);
+        }
     }
 
     public void SetupBallMovement(GridSystem gridManager)
@@ -52,6 +59,7 @@ public class BallMovement : MonoBehaviour
             targetPos = GetFinalDestination(moveDir);
             if (transform.position != targetPos)
             {
+                rollDir = moveDir;
                 isMoving = true;
                 GameEvents.RaiseBallMoved();
             }
