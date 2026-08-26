@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TutorialUI tutorialUI;
     [SerializeField] private CreditsUI creditsUI;
     [SerializeField] private SettingsUI settingsUI;
+    [SerializeField] private FadeUI fadeUI;
 
     private void OnEnable()
     {
@@ -72,7 +73,7 @@ public class UIManager : MonoBehaviour
 
     private void HandleLevelButtonClicked(string stageName, int currentLevelIndex)
     {
-        SwitchToUI(mainGameUI.gameObject);
+        fadeUI.LoadFade(() => SwitchToUI(mainGameUI.gameObject));
     }
 
     private void HandleLevelLoaded(LevelDTO levelDTO)
@@ -88,7 +89,7 @@ public class UIManager : MonoBehaviour
 
     private void HandleMainMenuButtonClicked()
     {
-        SwitchToUI(mainMenuUI.gameObject);
+        fadeUI.LoadFade(() => SwitchToUI(mainMenuUI.gameObject));
     }
 
     public void OnCloseButtonClicked(GameObject uiElement)

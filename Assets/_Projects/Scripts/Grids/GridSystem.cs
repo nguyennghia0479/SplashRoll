@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ public class GridSystem : MonoBehaviour
     [Header("Ball Info")]
     [SerializeField] private BallMovement ballPrefab;
     [SerializeField] private float ballSize = .8f;
+
+    private readonly float flipDuration = 1f;
+    private readonly float modifyGridDuration = .5f;
 
     private int width;
     private int height;
@@ -35,8 +39,31 @@ public class GridSystem : MonoBehaviour
         UIEvents.OnMainMenuButtonClicked -= HandleMainMenuButtonClicked;
     }
 
+    private IEnumerator RotateGrid()
+    {
+        transform.rotation = Quaternion.Euler(0, 90, 0);
+        yield return null;
+        Quaternion targetRotation = Quaternion.Euler(0, 0, 0);
+        yield return GridRotateRoutine(transform.rotation, targetRotation);
+    }
+
+    private IEnumerator GridRotateRoutine(Quaternion startRotation, Quaternion targetRotation)
+    {
+        float elapsedTime = 0;
+        while (elapsedTime < flipDuration)
+        {
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / flipDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
+        GenerateBall();
+    }
+
     private void HandleLevelLoaded(LevelDTO levelDTO)
     {
+        StartCoroutine(RotateGrid());
         LevelData level = levelDTO.LevelData;
         width = level.gridWidth;
         height = level.gridHeight;
@@ -47,8 +74,7 @@ public class GridSystem : MonoBehaviour
 
         ResetGrid();
         SetOrthographicSizeByGridSize();
-        GenerateGrid();
-        GenerateBall();
+        Invoke(nameof(GenerateGrid), modifyGridDuration);
     }
 
     private void HandleMainMenuButtonClicked()
@@ -59,7 +85,7 @@ public class GridSystem : MonoBehaviour
         uiPadding = 0;
         wallCoordinates = null;
         ballSpawnCoordinate = Vector2Int.zero;
-        ResetGrid();
+        Invoke(nameof(ResetGrid), modifyGridDuration);
     }
 
     private void ResetGrid()

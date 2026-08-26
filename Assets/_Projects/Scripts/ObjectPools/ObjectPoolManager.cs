@@ -61,7 +61,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
 
         PooledObject activePooledObject = pools[pooledObject].Get();
-        activePooledObject.transform.SetPositionAndRotation(position, rotation);
+        activePooledObject.transform.SetLocalPositionAndRotation(position, rotation);
         return activePooledObject;
     }
 
