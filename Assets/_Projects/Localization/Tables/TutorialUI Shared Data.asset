@@ -16,7 +16,11 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 5e44f90f5e558db4382ae07960434290
   m_Entries:
   - m_Id: 10528268288
-    m_Key: tutorial.text
+    m_Key: tutorial.pcGuide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 828742641950720
+    m_Key: tutorial.mobileGuide
     m_Metadata:
       m_Items: []
   m_Metadata:

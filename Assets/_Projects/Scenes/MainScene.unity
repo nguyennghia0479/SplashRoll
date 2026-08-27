@@ -4306,7 +4306,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1559047073}
   m_HandleRect: {fileID: 1559047072}
   m_Direction: 2
-  m_Value: 1.0000002
+  m_Value: 1
   m_Size: 0.7092199
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -13090,6 +13090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652ec40c989e3a044b559c3556a6e94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FadeUI
+  canvasRect: {fileID: 1314135450}
   canvasScaler: {fileID: 1314135448}
   duration: 0.5
 --- !u!114 &1153082270
@@ -17066,6 +17067,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9abbf421988ae45830269017e5256c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TutorialUI
+  pcGuideText: {fileID: 1246680947}
+  mobileGuideText: {fileID: 2126340784}
 --- !u!1 &1474440177
 GameObject:
   m_ObjectHideFlags: 0
@@ -21008,7 +21011,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.45
+  m_fontSize: 54
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -21716,7 +21719,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 86
+  m_fontSize: 85.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -23501,7 +23504,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2126340782
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23537,7 +23540,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:5e44f90f5e558db4382ae07960434290
     m_TableEntryReference:
-      m_KeyId: 10528268288
+      m_KeyId: 828742641950720
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

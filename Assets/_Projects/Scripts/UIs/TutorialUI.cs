@@ -1,16 +1,21 @@
+using TMPro;
 using UnityEngine;
 
 public class TutorialUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] private TMP_Text pcGuideText;
+    [SerializeField] private TMP_Text mobileGuideText;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        mobileGuideText.gameObject.SetActive(false);
+        pcGuideText.gameObject.SetActive(true);
+      
+#if UNITY_ANDROID
+        mobileGuideText.gameObject.SetActive(true);
+        pcGuideText.gameObject.SetActive(false);
+#endif
+
+       
     }
 }

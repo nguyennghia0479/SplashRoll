@@ -24,8 +24,18 @@ MonoBehaviour:
       - The ball
       will keep moving until it hits a wall or the edge.
 
-      - Color all the
-      white cells to complete the level.'
+      - Color all the white
+      cells to complete the level.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 828742641950720
+    m_Localized: '- Swipe to move the ball.
+
+      - The ball will keep moving until
+      it hits a wall or the edge.
+
+      - Color all the white cells to complete
+      the level.'
     m_Metadata:
       m_Items: []
   references:

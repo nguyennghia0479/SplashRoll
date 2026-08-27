@@ -8,6 +8,8 @@ public class FadeUI : MonoBehaviour
     [SerializeField] private CanvasScaler canvasScaler;
     [SerializeField] private float duration = .5f;
 
+    private readonly int heightBonus = 1000; // use for mobile;
+
     private RectTransform fadeRect;
     private Vector2 leftPosition;
     private Vector2 centerPosition;
@@ -32,6 +34,11 @@ public class FadeUI : MonoBehaviour
 
         screenWidth = canvasScaler.referenceResolution.x;
         screenHeight = canvasScaler.referenceResolution.y;
+
+#if UNITY_ANDROID
+        screenHeight += heightBonus;
+#endif
+
         fadeRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, screenWidth);
         fadeRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, screenHeight);
     }
