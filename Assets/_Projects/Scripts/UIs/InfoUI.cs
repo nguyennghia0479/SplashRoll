@@ -15,7 +15,7 @@ public class InfoUI : MonoBehaviour
     [SerializeField] protected LocalizedString bestLocalizedString;
     [SerializeField] protected string bestKey;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         levelLocalizedString = new(tableReference, levelKey);
         movesLocalizedString = new(tableReference, movesKey);

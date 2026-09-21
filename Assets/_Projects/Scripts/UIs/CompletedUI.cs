@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class CompletedUI : InfoUI
 {
+    [Header("Ads Info")]
+    [SerializeField] private InterstitialAdManager adManager;
+
     [Header("Text Elements")]
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private TMP_Text movesText;
@@ -16,6 +19,17 @@ public class CompletedUI : InfoUI
     [SerializeField] private Button nextLevelButton;
 
     private ResultData resultData;
+    private bool isMobilePlatform;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        isMobilePlatform = false;
+#if UNITY_ANDROID
+        isMobilePlatform = true;
+#endif
+    }
 
     protected override void OnEnable()
     {
@@ -65,17 +79,41 @@ public class CompletedUI : InfoUI
 
     private void OnRestartButtonClicked()
     {
+        if (adManager != null && isMobilePlatform)
+            adManager.ShowAd(ProceedRestartButtonClicked);
+        else
+            ProceedRestartButtonClicked();
+    }
+
+    private void ProceedRestartButtonClicked()
+    {
         UIEvents.RaiseRestartButtonClicked();
         gameObject.SetActive(false);
     }
 
     private void OnMainMenuButtonClicked()
     {
+        if (adManager != null && isMobilePlatform)
+            adManager.ShowAd(ProceedMainMenuButtonClicked);
+        else
+            ProceedMainMenuButtonClicked();
+    }
+
+    private void ProceedMainMenuButtonClicked()
+    {
         UIEvents.RaiseMainMenuButtonClicked();
         gameObject.SetActive(false);
     }
 
     private void OnNextLevelButtonClicked()
+    {
+        if (adManager != null && isMobilePlatform)
+            adManager.ShowAd(ProceedNextLevelButtonClicked);
+        else
+            ProceedNextLevelButtonClicked();
+    }
+
+    private void ProceedNextLevelButtonClicked()
     {
         UIEvents.RaiseNextLevelButtonClicked();
         gameObject.SetActive(false);
